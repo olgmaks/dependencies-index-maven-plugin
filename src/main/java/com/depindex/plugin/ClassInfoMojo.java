@@ -22,24 +22,12 @@ public class ClassInfoMojo extends AbstractMojo {
     @Parameter(property = "depindex.class", required = true)
     private String className;
 
-    @Parameter(property = "depindex.out")
-    private String outputFilePath;
-
-    @Parameter(property = "depindex.outputDirectory", defaultValue = ".depindex")
-    private String outputDirectory;
-
-    @Parameter(property = "depindex.indexFile", defaultValue = "dependencies.json")
-    private String outputFile;
-
     @Override
     public void execute() throws MojoExecutionException {
         Command command = new ClassInfoCommand(
             project,
             session,
             className,
-            outputFilePath,
-            outputDirectory,
-            outputFile,
             getLog()
         );
 

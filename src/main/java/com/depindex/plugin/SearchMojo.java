@@ -26,12 +26,6 @@ public class SearchMojo extends AbstractMojo {
     @Parameter(property = "depindex.q", required = true)
     private String className;
 
-    @Parameter(property = "depindex.outputDirectory", defaultValue = ".depindex")
-    private String outputDirectory;
-
-    @Parameter(property = "depindex.outputFile", defaultValue = "dependencies.json")
-    private String outputFile;
-
     @Parameter(property = "depindex.maxClasses", defaultValue = "10000")
     private int maxClasses;
 
@@ -50,8 +44,6 @@ public class SearchMojo extends AbstractMojo {
             project,
             session,
             dependencyGraphBuilder,
-            outputDirectory,
-            outputFile,
             maxClasses,
             className,
             searchLimit,

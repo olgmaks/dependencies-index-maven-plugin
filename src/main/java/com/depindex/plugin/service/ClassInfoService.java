@@ -104,6 +104,18 @@ public class ClassInfoService {
         throw new IllegalArgumentException("Class '" + className + "' not found in index.");
     }
 
+    public String saveClassSource(String className, String source) throws IOException {
+        File classesDir = new File(indexDirectory, "classes");
+        Files.createDirectories(classesDir.toPath());
+        
+        String fileName = className.replace('.', File.separatorChar) + ".java";
+        File outputFile = new File(classesDir, fileName);
+        Files.createDirectories(outputFile.getParentFile().toPath());
+        
+        Files.writeString(outputFile.toPath(), source);
+        return outputFile.getAbsolutePath();
+    }
+
     private Map<String, Object> buildClassInfo(DependencyInfo dep, String fullClassName) throws IOException {
         Map<String, Object> result = new HashMap<>();
         result.put("class", fullClassName);

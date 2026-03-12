@@ -17,11 +17,12 @@ import java.util.Map;
 
 public class SearchCommand implements Command {
 
+    private static final String OUTPUT_DIRECTORY = ".depindex";
+    private static final String OUTPUT_FILE = "dependencies.json";
+
     private final MavenProject project;
     private final MavenSession session;
     private final DependencyGraphBuilder dependencyGraphBuilder;
-    private final String outputDirectory;
-    private final String outputFile;
     private final int maxClasses;
     private final String className;
     private final int searchLimit;
@@ -32,8 +33,6 @@ public class SearchCommand implements Command {
             MavenProject project,
             MavenSession session,
             DependencyGraphBuilder dependencyGraphBuilder,
-            String outputDirectory,
-            String outputFile,
             int maxClasses,
             String className,
             int searchLimit,
@@ -42,8 +41,6 @@ public class SearchCommand implements Command {
         this.project = project;
         this.session = session;
         this.dependencyGraphBuilder = dependencyGraphBuilder;
-        this.outputDirectory = outputDirectory;
-        this.outputFile = outputFile;
         this.maxClasses = maxClasses;
         this.className = className;
         this.searchLimit = searchLimit;
@@ -53,7 +50,7 @@ public class SearchCommand implements Command {
 
     @Override
     public void execute() throws MojoExecutionException {
-        SearchService searchService = new SearchService(outputDirectory, outputFile);
+        SearchService searchService = new SearchService(OUTPUT_DIRECTORY, OUTPUT_FILE);
 
         if (!searchService.indexExists() || reindex) {
             if (reindex) {
@@ -86,7 +83,7 @@ public class SearchCommand implements Command {
     private void runIndexing() throws MojoExecutionException {
         try {
             JarReaderService jarReader = new JarReaderService(maxClasses);
-            IndexWriterService writer = new IndexWriterService(outputDirectory, outputFile);
+            IndexWriterService writer = new IndexWriterService(OUTPUT_DIRECTORY, OUTPUT_FILE);
 
             DependencyIndexService service = new DependencyIndexService(
                 project,
