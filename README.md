@@ -64,35 +64,6 @@ mvn depindex:search -Ddepindex.q=Map -Ddepindex.outputDirectory=.depindex
 mvn depindex:classinfo -Ddepindex.class=com.google.common.collect.Lists -Ddepindex.out=/tmp/Lists.java
 ```
 
-### Index during build
-
-Add to your `pom.xml`:
-
-```xml
-<build>
-    <plugins>
-        <plugin>
-            <groupId>com.depindex</groupId>
-            <artifactId>depindex-maven-plugin</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <executions>
-                <execution>
-                    <id>index-dependencies</id>
-                    <phase>process-classes</phase>
-                    <goals>
-                        <goal>search</goal>
-                    </goals>
-                    <configuration>
-                        <depindex.reindex>true</depindex.reindex>
-                        <depindex.q>.*</depindex.q>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
-</build>
-```
-
 ## Index Contents
 
 The index includes:
@@ -101,25 +72,7 @@ The index includes:
 2. **Maven dependencies** - all transitive dependencies
 3. **JDK classes** - Java standard library classes
 
-## Configuration
-
-### Plugin Configuration
-
-```xml
-<plugin>
-    <groupId>com.depindex</groupId>
-    <artifactId>depindex-maven-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <configuration>
-        <outputDirectory>.depindex</outputDirectory>
-        <outputFile>dependencies.json</outputFile>
-        <maxClasses>10000</maxClasses>
-        <searchLimit>10</searchLimit>
-    </configuration>
-</plugin>
-```
-
-## Development
+## Index Contents
 
 ### Build
 
