@@ -1,5 +1,8 @@
 package com.depindex.plugin.command;
 
+import com.depindex.plugin.service.DependencyIndexService;
+import com.depindex.plugin.service.IndexWriterService;
+import com.depindex.plugin.service.JarReaderService;
 import com.depindex.plugin.service.SearchService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,6 +25,7 @@ public class SearchCommand implements Command {
     private final int maxClasses;
     private final String className;
     private final int searchLimit;
+    private final boolean reindex;
     private final Log log;
 
     public SearchCommand(
@@ -33,6 +37,7 @@ public class SearchCommand implements Command {
             int maxClasses,
             String className,
             int searchLimit,
+            boolean reindex,
             Log log) {
         this.project = project;
         this.session = session;
@@ -42,6 +47,7 @@ public class SearchCommand implements Command {
         this.maxClasses = maxClasses;
         this.className = className;
         this.searchLimit = searchLimit;
+        this.reindex = reindex;
         this.log = log;
     }
 
@@ -49,17 +55,13 @@ public class SearchCommand implements Command {
     public void execute() throws MojoExecutionException {
         SearchService searchService = new SearchService(outputDirectory, outputFile);
 
-        if (!searchService.indexExists()) {
-            log.info("Index not found. Running indexing first...");
-            new IndexCommand(
-                project,
-                session,
-                dependencyGraphBuilder,
-                outputDirectory,
-                outputFile,
-                maxClasses,
-                log
-            ).execute();
+        if (!searchService.indexExists() || reindex) {
+            if (reindex) {
+                log.info("Reindex requested, building index...");
+            } else {
+                log.info("Index not found, building index...");
+            }
+            runIndexing();
         }
 
         try {
@@ -78,6 +80,26 @@ public class SearchCommand implements Command {
         } catch (Exception e) {
             log.error("Search failed: " + e.getMessage());
             throw new MojoExecutionException("Search failed", e);
+        }
+    }
+
+    private void runIndexing() throws MojoExecutionException {
+        try {
+            JarReaderService jarReader = new JarReaderService(maxClasses);
+            IndexWriterService writer = new IndexWriterService(outputDirectory, outputFile);
+
+            DependencyIndexService service = new DependencyIndexService(
+                project,
+                session,
+                dependencyGraphBuilder,
+                jarReader,
+                writer,
+                log
+            );
+
+            service.execute();
+        } catch (Exception e) {
+            throw new MojoExecutionException("Indexing failed", e);
         }
     }
 }

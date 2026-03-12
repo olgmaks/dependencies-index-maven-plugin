@@ -38,6 +38,9 @@ public class SearchMojo extends AbstractMojo {
     @Parameter(property = "depindex.search.limit", defaultValue = "10")
     private int searchLimit;
 
+    @Parameter(property = "depindex.reindex", defaultValue = "false")
+    private boolean reindex;
+
     @Inject
     private DependencyGraphBuilder dependencyGraphBuilder;
 
@@ -52,6 +55,7 @@ public class SearchMojo extends AbstractMojo {
             maxClasses,
             className,
             searchLimit,
+            reindex,
             getLog()
         );
 
