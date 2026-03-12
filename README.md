@@ -39,8 +39,7 @@ mvn com.depindex:depindex-maven-plugin:classinfo -Ddepindex.class=java.util.Arra
 |----------|-------------|---------|
 | `depindex.q` | Class name to search for (required for search) | - |
 | `depindex.class` | Full class name to get info for (required for classinfo) | - |
-| `depindex.maxClasses` | Maximum number of classes to index per dependency | `10000` |
-| `depindex.search.limit` | Maximum number of search results | `10` |
+| `depindex.limit` | Maximum number of search results | `10` |
 | `depindex.reindex` | Force rebuild of index before search | `false` |
 
 ## Examples
@@ -48,7 +47,7 @@ mvn com.depindex:depindex-maven-plugin:classinfo -Ddepindex.class=java.util.Arra
 ### Search with custom result limit
 
 ```bash
-mvn com.depindex:depindex-maven-plugin:search -Ddepindex.q=List -Ddepindex.search.limit=20
+mvn com.depindex:depindex-maven-plugin:search -Ddepindex.q=List -Ddepindex.limit=20
 ```
 
 ### Reindex before search

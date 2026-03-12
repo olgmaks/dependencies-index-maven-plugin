@@ -23,9 +23,8 @@ public class SearchCommand implements Command {
     private final MavenProject project;
     private final MavenSession session;
     private final DependencyGraphBuilder dependencyGraphBuilder;
-    private final int maxClasses;
     private final String className;
-    private final int searchLimit;
+    private final int limit;
     private final boolean reindex;
     private final Log log;
 
@@ -33,17 +32,15 @@ public class SearchCommand implements Command {
             MavenProject project,
             MavenSession session,
             DependencyGraphBuilder dependencyGraphBuilder,
-            int maxClasses,
             String className,
-            int searchLimit,
+            int limit,
             boolean reindex,
             Log log) {
         this.project = project;
         this.session = session;
         this.dependencyGraphBuilder = dependencyGraphBuilder;
-        this.maxClasses = maxClasses;
         this.className = className;
-        this.searchLimit = searchLimit;
+        this.limit = limit;
         this.reindex = reindex;
         this.log = log;
     }
@@ -62,7 +59,7 @@ public class SearchCommand implements Command {
         }
 
         try {
-            List<Map<String, Object>> results = searchService.search(className, searchLimit);
+            List<Map<String, Object>> results = searchService.search(className, limit);
             
             if (results.isEmpty()) {
                 log.info("No classes matching '" + className + "' found in index.");
@@ -82,7 +79,7 @@ public class SearchCommand implements Command {
 
     private void runIndexing() throws MojoExecutionException {
         try {
-            JarReaderService jarReader = new JarReaderService(maxClasses);
+            JarReaderService jarReader = new JarReaderService();
             IndexWriterService writer = new IndexWriterService(OUTPUT_DIRECTORY, OUTPUT_FILE);
 
             DependencyIndexService service = new DependencyIndexService(

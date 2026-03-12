@@ -11,10 +11,7 @@ import java.util.List;
 
 public class JarReaderService {
 
-    private final int maxClasses;
-
-    public JarReaderService(int maxClasses) {
-        this.maxClasses = maxClasses;
+    public JarReaderService() {
     }
 
     public List<String> extractClasses(File jarFile) {
@@ -37,7 +34,6 @@ public class JarReaderService {
                 .map(Path::toString)
                 .filter(this::isPublicClass)
                 .map(this::toClassName)
-                .limit(maxClasses)
                 .forEach(classes::add);
             
             fs.close();
@@ -63,7 +59,6 @@ public class JarReaderService {
                 .map(Path::toString)
                 .filter(this::isPublicClass)
                 .map(path -> toClassNameFromPath(path, basePath))
-                .limit(maxClasses)
                 .forEach(classes::add);
         } catch (IOException e) {
             // Silently ignore errors
