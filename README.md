@@ -27,6 +27,8 @@ mvn com.depindex:depindex-maven-plugin:search -Ddepindex.q=ArrayList -Ddepindex.
 
 ### Get class information with source code
 
+Class source is saved to `.depindex/classes/<package>/<ClassName>.java`:
+
 ```bash
 mvn com.depindex:depindex-maven-plugin:classinfo -Ddepindex.class=java.util.ArrayList
 ```
@@ -37,12 +39,9 @@ mvn com.depindex:depindex-maven-plugin:classinfo -Ddepindex.class=java.util.Arra
 |----------|-------------|---------|
 | `depindex.q` | Class name to search for (required for search) | - |
 | `depindex.class` | Full class name to get info for (required for classinfo) | - |
-| `depindex.outputDirectory` | Directory to store the index | `.depindex` |
-| `depindex.outputFile` | Index file name | `dependencies.json` |
 | `depindex.maxClasses` | Maximum number of classes to index per dependency | `10000` |
 | `depindex.search.limit` | Maximum number of search results | `10` |
 | `depindex.reindex` | Force rebuild of index before search | `false` |
-| `depindex.out` | Output file path for classinfo command | stdout |
 
 ## Examples
 
@@ -52,16 +51,10 @@ mvn com.depindex:depindex-maven-plugin:classinfo -Ddepindex.class=java.util.Arra
 mvn com.depindex:depindex-maven-plugin:search -Ddepindex.q=List -Ddepindex.search.limit=20
 ```
 
-### Search with custom output directory
+### Reindex before search
 
 ```bash
-mvn com.depindex:depindex-maven-plugin:search -Ddepindex.q=Map -Ddepindex.outputDirectory=.depindex
-```
-
-### Get class info and save to file
-
-```bash
-mvn com.depindex:depindex-maven-plugin:classinfo -Ddepindex.class=com.google.common.collect.Lists -Ddepindex.out=/tmp/Lists.java
+mvn com.depindex:depindex-maven-plugin:search -Ddepindex.q=List -Ddepindex.reindex=true
 ```
 
 ## Index Contents
@@ -69,8 +62,13 @@ mvn com.depindex:depindex-maven-plugin:classinfo -Ddepindex.class=com.google.com
 The index includes:
 
 1. **Current project classes** - compiled classes from `target/classes`
-2. **Maven dependencies** - all transitive dependencies
+2. **Maven dependencies** - all compile/runtime scope dependencies
 3. **JDK classes** - Java standard library classes
+
+## Output
+
+- Index: `.depindex/dependencies.json`
+- Class sources: `.depindex/classes/<classname>.java`
 
 ## Development
 
