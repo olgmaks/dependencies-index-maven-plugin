@@ -42,7 +42,7 @@ public class ClassInfoCommand implements Command {
             String source = classInfoService.getClassSource(className);
             
             String outputPath = classInfoService.saveClassSource(className, source);
-            log.info("Class source written to: " + outputPath);
+            System.out.println(outputPath);
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
             throw new MojoExecutionException(e.getMessage());
