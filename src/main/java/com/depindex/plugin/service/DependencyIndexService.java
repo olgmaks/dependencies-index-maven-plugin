@@ -34,7 +34,8 @@ public class DependencyIndexService {
         this.jarReader = jarReader;
         this.writer = writer;
         this.log = log;
-        this.infoBuilder = new DependencyInfoBuilder(jarReader);
+        String localRepoPath = session.getLocalRepository().getBasedir();
+        this.infoBuilder = new DependencyInfoBuilder(jarReader, localRepoPath);
     }
 
     public void execute() {

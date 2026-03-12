@@ -18,6 +18,7 @@ public class DependencyGraphService {
     private final MavenSession session;
     private final DependencyGraphBuilder dependencyGraphBuilder;
     private final Log log;
+    private final String localRepositoryPath;
 
     public DependencyGraphService(
             MavenProject project,
@@ -28,6 +29,7 @@ public class DependencyGraphService {
         this.session = session;
         this.dependencyGraphBuilder = dependencyGraphBuilder;
         this.log = log;
+        this.localRepositoryPath = session.getLocalRepository().getBasedir();
     }
 
     public List<Artifact> getDependencies() {
@@ -57,5 +59,9 @@ public class DependencyGraphService {
         for (DependencyNode child : node.getChildren()) {
             collectDependencies(child, artifacts);
         }
+    }
+
+    public String getLocalRepositoryPath() {
+        return localRepositoryPath;
     }
 }

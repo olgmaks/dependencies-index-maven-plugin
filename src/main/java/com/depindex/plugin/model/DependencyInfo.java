@@ -90,6 +90,9 @@ public class DependencyInfo {
         map.put("type", type);
         map.put("scope", scope);
         map.put("classes", classes);
+        if (jarPath != null) {
+            map.put("jarPath", jarPath);
+        }
         return map;
     }
 }
