@@ -49,19 +49,19 @@ mvn com.depindex:depindex-maven-plugin:classinfo -Ddepindex.class=java.util.Arra
 ### Search with custom result limit
 
 ```bash
-mvn depindex:search -Ddepindex.q=List -Ddepindex.search.limit=20
+mvn com.depindex:depindex-maven-plugin:search -Ddepindex.q=List -Ddepindex.search.limit=20
 ```
 
 ### Search with custom output directory
 
 ```bash
-mvn depindex:search -Ddepindex.q=Map -Ddepindex.outputDirectory=.depindex
+mvn com.depindex:depindex-maven-plugin:search -Ddepindex.q=Map -Ddepindex.outputDirectory=.depindex
 ```
 
 ### Get class info and save to file
 
 ```bash
-mvn depindex:classinfo -Ddepindex.class=com.google.common.collect.Lists -Ddepindex.out=/tmp/Lists.java
+mvn com.depindex:depindex-maven-plugin:classinfo -Ddepindex.class=com.google.common.collect.Lists -Ddepindex.out=/tmp/Lists.java
 ```
 
 ## Index Contents
@@ -72,16 +72,10 @@ The index includes:
 2. **Maven dependencies** - all transitive dependencies
 3. **JDK classes** - Java standard library classes
 
-## Index Contents
+## Development
 
 ### Build
 
 ```bash
 mvn clean install
-```
-
-### Run tests
-
-```bash
-mvn test
 ```
